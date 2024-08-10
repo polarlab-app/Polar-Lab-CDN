@@ -1,0 +1,17 @@
+.earthcontainer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: -1;
+}
+
+.earthcanvas {
+    width: 100%;
+    height: 100%;
+    max-width: 80vh;
+    max-height: 80vh;
+    aspect-ratio: 1;
+    z-index: -1;
+}
