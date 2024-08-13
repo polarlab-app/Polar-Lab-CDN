@@ -12,9 +12,12 @@
         "@tsparticles/react": "^3.0.0",
         "@tsparticles/slim": "^3.0.0",
         "cobe": "^0.6.3",
+        "fs": "^0.0.1-security",
         "next": "^14.2.5",
+        "path": "^0.12.7",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
+        "sharp": "^0.33.4",
         "tsparticles": "^3.5.0",
         "tsparticles-engine": "^2.12.0"
     },
