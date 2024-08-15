@@ -1,3 +1,4 @@
+'use server';
 import fs from 'fs';
 import path from 'path';
 import sharp from 'sharp';
@@ -28,6 +29,7 @@ export async function GET(request, { params }) {
             },
         });
     } catch (err) {
+        console.log(err);
         return NextResponse.json({ message: 'File not found, I call that a skill issue' }, { status: 404 });
     }
 }

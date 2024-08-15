@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
+import fs from 'fs/promises';
 import path from 'path';
+import sharp from 'sharp';
 
 export async function POST(req) {
     const { headers } = req;
@@ -11,6 +12,7 @@ export async function POST(req) {
 
     const formData = await req.formData();
     const file = formData.get('file');
+    const fileType = formData.get('fileType');
     const filePath = formData.get('filePath');
 
     if (!file || !filePath) {
@@ -18,10 +20,25 @@ export async function POST(req) {
     }
 
     const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-    const fullPath = path.join('/assets', filePath);
+    let buffer = Buffer.from(arrayBuffer);
 
-    fs.writeFileSync(fullPath, buffer);
+    if (fileType === 'profilePicture') {
+        buffer = await sharp(buffer).resize(512, 512).toFormat('webp').toBuffer();
+    }
 
-    return NextResponse.json({ message: 'File uploaded successfully' }, { status: 200 });
+    const baseDir = path.join(process.cwd(), 'assets');
+    const sanitizedFilePath = path.normalize(filePath).replace(/^(\.\.(\/|\\|$))+/, '');
+    const fullPath = path.resolve(baseDir, sanitizedFilePath);
+
+    if (!fullPath.startsWith(baseDir)) {
+        return NextResponse.json({ message: 'Invalid file path' }, { status: 400 });
+    }
+
+    try {
+        await fs.mkdir(path.dirname(fullPath), { recursive: true });
+        await fs.writeFile(fullPath, buffer);
+        return NextResponse.json({ message: 'File uploaded successfully' }, { status: 200 });
+    } catch (error) {
+        return NextResponse.json({ message: 'Failed to upload file' }, { status: 500 });
+    }
 }
