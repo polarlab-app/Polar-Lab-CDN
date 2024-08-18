@@ -3,7 +3,7 @@ const nextConfig = {
     experimental: {
         missingSuspenseWithCSRBailout: false,
         serverActions: {
-            allowedOrigins: ['https://polarlab.app', 'polarlab.app', '172.99.0.2:3000'],
+            allowedOrigins: ['cdn.polarlab.app', '172.99.0.5:3003'],
             bodySizeLimit: '10mb',
         },
     },
@@ -75,4 +75,4 @@ const nextConfig = {
     },
 };
 
-export default nextConfig;
+module.exports = nextConfig;
